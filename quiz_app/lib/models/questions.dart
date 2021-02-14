@@ -6,7 +6,7 @@ class Questions{
   String C;
   String D;
   String T;
-  //String imgAdres = "https://cdn.pixabay.com/photo/2014/07/10/11/17/grimace-388987_1280.jpg";
+
 
   //guncellemelerde id verilebilir
   //ekleme operasyonlarında id verilmez,genelde veritabanında kendisi oluşturur
@@ -20,8 +20,6 @@ class Questions{
     this.C=C;
     this.D=D;
     this.T=T;
-   // this.imgAdres=imgAdres;
-
   }
 
   //ekleme yaparken bunu kullanacaz
@@ -32,12 +30,9 @@ class Questions{
     this.C=C;
     this.D=D;
     this.T=T;
-   // this.imgAdres=imgAdres;
-
   }
 
   Questions.withoutInfo(){
-
   }
 
 
