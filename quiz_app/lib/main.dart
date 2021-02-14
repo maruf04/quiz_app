@@ -140,223 +140,152 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   Widget build(BuildContext context) {
     return questionOver ? endPage() : Padding(
       padding: const EdgeInsets.all(40.0),
-      child: Center(
-        child: Column(
+      child: Column(
           children: <Widget>[
-            questionSection(),
-           //AnsWer  A
-            answerA(),
-            //Answer B
-            answerB(),
-            //Answer C
-            answerC(),
-            //Answer D
-            answerD(),
-            //button Next
-            sonMu(),
+            flexibleT(questionSection()),
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 6,
+              child:Material(
+                child: Column(
+                  children: [
+                    flexibleT(Padding(
+                      padding: const EdgeInsets.fromLTRB(50.0,0,50.0,0),
+                      child: questionText(),
+                    ),),
+                    flexibleT(answerA()),
+                    flexibleT(answerB()),
+                    flexibleT(answerC()),
+                    flexibleT(answerD()),
+                    nextButton(),
+                  ],
+                ),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(40.0),
+                elevation: 2.0,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+              ),
+            ),
           ],
-        ),
       ),
     );
   }
 
-  //son soruya gelip gelmediğini  kontrol eder
-  Widget sonMu(){
-    if(sayac==nqSize-1){
-      return endButton();
-    }
-    else{
-      return nextButton();
-    }
-  }
-
-  //en sonda gelecek olan button
-  Widget endButton() {
-  return Padding(
-    padding: const EdgeInsets.all(20.0),
-    child: RaisedButton(
-      onPressed: (){
-        showDialog(
-          context: context,
-          barrierDismissible: false, // user must tap button!
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('finish?'),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: <Widget>[
-                    Text("do you want to finish"),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('Yes'),
-                  onPressed: () {
-                    setState(() {
-                      answerTrueOrFalseSection();
-                    });
-                    Navigator.of(context).pop();
-                    if(sayac==nqSize-1){
-                      questionOver=true;
-                    }
-                  },
-                ),
-                TextButton(
-                  child: Text('No'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-              elevation: 20.0,
-              backgroundColor: Colors.orangeAccent,
-              shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(25.0),
-              ),
-            );
-          },
-        );
-      },
-      child: Text(' END',style: TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 20.0,// double
-        color: Colors.white,
-      ),),
-      color: Colors.blueAccent,
-      textColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: new BorderRadius.circular(18.0),
-      ),
-      padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-    ),
-  );
-}
-
   Widget nextButton() {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
+    return  Padding(
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 20.0),
       child: RaisedButton(
-        onPressed: (){
-
-          showDialog(
-            context: context,
-            barrierDismissible: false, // user must tap button!
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Are you sure?'),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      Text("Another question will be passed"),
-                      //Text('Would you like to approve of this message?'),
+            onPressed: (){
+              showDialog(
+                context: context,
+                barrierDismissible: false, // user must tap button!
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Are you sure?'),
+                    content: SingleChildScrollView(
+                      child: ListBody(
+                        children: <Widget>[
+                          Text("Another question will be passed"),
+                        ],
+                      ),
+                    ),
+                    actions: <Widget>[
+                      cardYes(),
+                      cardNo(),
                     ],
-                  ),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    child: Text('Yes'),
-                    onPressed: () {
-                      setState(() {
-                        answerTrueOrFalseSection();
-                      });
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  TextButton(
-                    child: Text('No'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-                elevation: 20.0,
-                backgroundColor: Colors.orangeAccent,
-                shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(25.0),
-                ),
+                    elevation: 20.0,
+                    backgroundColor: Colors.blue,
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0),
+                    ),
+                  );
+                },
               );
             },
-          );
-        },
-        child: Text(' NEXT ',style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20.0,// double
-          color: Colors.white,
-        ),),
-        color: Colors.blueAccent,
-        textColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(18.0),
-        ),
-        padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+            child: Text(' NEXT ',style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 25.0,// double
+              color: Colors.white,
+            ),),
+            color: Colors.blue,
+            textColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(18.0),
+            ),
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
       ),
     );
   }
 
   //uygulamanın sonlandırılıp puan vb. bilgilerin verildiği kısım
   Widget endPage() {
-  return Center(
-    child: Text("Point = "+point.toString(),style: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 20.0,// double
-      color: Colors.white,
-    ),),
-  );
-}
+    return Center(
+      child: Material(
+        child: Text("Point = "+point.toString(),style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 20.0,// double
+          color: Colors.black,
+        ),),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5.0),
+        elevation: 2.0,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+      ),
+    );
+  }
 
   //question Section
   Widget questionSection() {
-  return Column(
-    children: [
-      Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: Row(
-          children: [
-
-            Text(
-              "Question "+sayac.toString(),
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 26.0,// double
-                color: Colors.grey,
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Row(
+            children: [
+              Text(
+                "Question "+sayac.toString(),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 26.0,// double
+                  color: Colors.white,
+                ),
               ),
-            ),
-
-            Text(
-              "/"+(nqSize-1).toString(),
-              style: TextStyle(
-                //fontWeight: FontWeigh,
-                fontSize: 20.0,// double
-                color: Colors.grey,
+              Text(
+                "/"+(nqSize-1).toString(),
+                style: TextStyle(
+                  //fontWeight: FontWeigh,
+                  fontSize: 20.0,// double
+                  color: Colors.white,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      Text(
+        /*Text(
         "--------------------------------------------------",
         style: TextStyle(
           fontWeight: FontWeight.w200,
           fontSize: 20.0,// double
-          color:  Colors.grey,
+          color: Colors.white,
         ),
-      ),
-      Padding(
-        padding: const EdgeInsets.all(20.0),
-        child:Text(
+      ),*/
+      ],
+    );
+  }
+  Widget questionText() {
+    return Center(
+      child: Text(
           newQuestions[sayac].quest,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 25.0,// double
-            color: Colors.white,
+            fontSize: 20.0,// double
+            color: Colors.black,
           ),
-        ),
-
       ),
-    ],
-  );
-}
+    );
+  }
+
+
 
   //answer
   Widget answerA() {
@@ -370,9 +299,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         disabledBorderColor: Colors.orangeAccent,
         child: ListTile(
           title: Text(newQuestions[sayac].A,style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18.0,// double
-            color: Colors.white,
+            fontWeight: FontWeight.normal,
+            fontSize: 15.0,// double
+            color: Colors.black,
           ),),
           leading: Radio(
             value: SingingCharacter.A,
@@ -400,9 +329,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         disabledBorderColor: Colors.orangeAccent,
         child: ListTile(
           title: Text(newQuestions[sayac].B,style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18.0,// double
-            color: Colors.white,
+            fontWeight: FontWeight.normal,
+            fontSize: 15.0,// double
+            color: Colors.black,
           ),),
           leading: Radio(
             value: SingingCharacter.B,
@@ -430,9 +359,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         disabledBorderColor: Colors.orangeAccent,
         child: ListTile(
           title: Text(newQuestions[sayac].C,style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18.0,// double
-            color: Colors.white,
+            fontWeight: FontWeight.normal,
+            fontSize: 15.0,// double
+            color: Colors.black,
           ),),
           leading: Radio(
             value: SingingCharacter.C,
@@ -460,9 +389,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         disabledBorderColor: Colors.orangeAccent,
         child: ListTile(
           title: Text(newQuestions[sayac].D,style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18.0,// double
-            color: Colors.white,
+            fontWeight: FontWeight.normal,
+            fontSize: 15.0,// double
+            color: Colors.black,
           ),),
           leading: Radio(
             value: SingingCharacter.D,
@@ -479,6 +408,54 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       ),
     );
   }
+
+  Widget cardYes() {
+    return sayac==nqSize-1 ?
+    Card(
+      child: TextButton(
+        child: Text('Yes'),
+        onPressed: () {
+          setState(() {
+            answerTrueOrFalseSection();
+          });
+          Navigator.of(context).pop();
+          if(sayac==nqSize-1){
+            questionOver=true;
+          }
+        },
+      ),
+    )
+        :
+    Card(
+      child: TextButton(
+        child: Text('Yes'),
+        onPressed: () {
+          setState(() {
+            answerTrueOrFalseSection();
+          });
+          Navigator.of(context).pop();
+        },
+      ),
+      shape: new RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(10.0),
+      ),
+    );
+  }
+
+  Widget cardNo() {
+    return Card(
+      child: TextButton(
+        child: Text('No'),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+      shape: new RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(10.0),
+      ),
+    );
+  }
+
 
   //cevapların Dogru ya da yanlış olduğunun kontrol edilmesi
   void answerTrueOrFalseSection() {
@@ -510,6 +487,18 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     }
   }
 }
+
+//flexible için daha az kod amaçlanmıştır
+Widget flexibleT(Widget widget) {
+  return Flexible(
+    fit: FlexFit.tight,
+    flex: 1,
+    child: widget,
+  );
+}
+
+
+
 
 
 
